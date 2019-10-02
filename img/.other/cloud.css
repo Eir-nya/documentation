@@ -1,0 +1,64 @@
+@keyframes cloud0 {
+    from {
+        filter: opacity(1);
+        left: 50%;
+        top:  15%;
+    }
+    to {
+        filter: opacity(0);
+        left: 40%;
+        top: 10%;
+    }
+}
+
+@keyframes cloud1 {
+    from {
+        filter: opacity(1);
+        left: 50%;
+        top:  15%;
+    }
+    to {
+        filter: opacity(0);
+        left: 54%;
+        top: 17%;
+    }
+}
+
+@keyframes cloud2 {
+    from {
+        filter: opacity(1);
+        left: 50%;
+        top:  15%;
+    }
+    to {
+        filter: opacity(0);
+        left: 56%;
+        top: 14%;
+    }
+}
+
+@keyframes cloud3 {
+    from {
+        filter: opacity(1);
+        left: 50%;
+        top:  15%;
+    }
+    to {
+        filter: opacity(0);
+        left: 48%;
+        top: 19%;
+    }
+}
+
+@keyframes cloud4 {
+    from {
+        filter: opacity(1);
+        left: 50%;
+        top:  15%;
+    }
+    to {
+        filter: opacity(0);
+        left: 48%;
+        top: 4%;
+    }
+}
