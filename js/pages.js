@@ -651,7 +651,7 @@ function loadPage(newPage) {
     for (var i = 0; i < allPages.length; i++) {
         if (allPages[i].id == newPage) {
             allPages[i].className += " active";
-            document.title = allPages[i].getAttribute("name") + " | Unitale/CYF Documentation";
+            document.title = allPages[i].getAttribute("name") + " | Unofficial Unitale/CYF Documentation";
             break;
         } else if (i == allPages.length - 1)
             alert("Page \"" + newPage.toString() + "\" was not found.\nThis is a bug in the Documentation. Please send a screenshot to the developers.");
@@ -677,7 +677,7 @@ else {
 var links = document.getElementsByTagName("a");
 
 for (var i = 0; i < links.length; i++) {
-    if (links[i].href.indexOf("http") == 0) {
+    if (links[i].getAttribute("href") != null && links[i].href.indexOf("http") == 0) {
         links[i].className = "external";
         links[i].setAttribute("title", "External link: " + links[i].href);
     };
