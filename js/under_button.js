@@ -1,7 +1,7 @@
 function switchbtn(btn, toggle) { btn.setAttribute("src", btn.getAttribute("src").replace(/_\d/, (toggle ? "_1" : "_0"))); };
 
 function mercybtn(btn) {
-    var sound = new Audio("img/.other/enemydust.wav");
+    var sound = new Audio("img/secwet/enemydust.wav");
     var play = function() { sound.play(); };
     sound.onloadeddata = play;
     
@@ -31,13 +31,13 @@ function mercybtn(btn) {
     
     var style = document.createElement("link");
     style.setAttribute("rel", "stylesheet");
-    style.setAttribute("href", "img/.other/cloud.css");
+    style.setAttribute("href", "img/secwet/cloud.css");
     document.body.appendChild(style);
     
     // create particles
     for (var i = 0; i < 5; i++) {
         var cloud = document.createElement("img");
-        cloud.setAttribute("src", "img/.other/spr_dustcloud_1.png");
+        cloud.setAttribute("src", "img/secwet/spr_dustcloud_1.png");
         
         cloud.style = "position: absolute; display: flex; left: 50%; top: 15%; animation: cloud" + i + " 0.5s ease-out forwards;";
         
