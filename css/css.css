@@ -152,7 +152,7 @@ h1, h2, h3, h4, h5 {
 }
 
 .sidebar-item ul li {
-    list-style: "";
+    list-style-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=);
 }
 
 .sidebar-item ul li > img {
@@ -445,7 +445,7 @@ table.outline tr:first-child {
 
 
 ol.indent {
-    list-style: none;
+    list-style-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=);
     counter-reset: orderedIndent;
     margin-left: 0;
     padding-right: 0;
