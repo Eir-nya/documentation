@@ -16,7 +16,7 @@
             
             <div id="sidebar">
                 <div class="sidebar-item" style="text-align: center;">
-                    <a href="index.html#index" onclick="javascript:loadPage('index'); redirectUrl();" style="text-decoration: none;color: #fff;font-family: segoe ui; font-size: initial;">
+                    <a href="index.html" onclick="javascript:loadPage('index');" style="text-decoration: none;color: #fff;font-family: segoe ui; font-size: initial;">
                         <img src="img/logo.png" width="90" style="margin-top: 5px;">
                         <br>
                         Unofficial Unitale/CYF<br>Documentation
@@ -34,43 +34,43 @@
                 <div class="sidebar-item indent">
                     Main
                     <ul>
-                        <li><a href="index.html#index" onclick="javascript:loadPage('index'); redirectUrl();">Main Page</a></li>
+                        <li><a href="index.html" onclick="javascript:loadPage('index');">Main Page</a></li>
                         <li><a href="javascript:random_page();">Random Page</a></li>
-                        <li><a href="index.html#styletest" onclick="javascript:loadPage('styletest'); redirectUrl();">Style test (TEMP)</a></li>
+                        <li><a href="index.html#styletest" onclick="javascript:loadPage('styletest');">Style test (TEMP)</a></li>
                     </ul>
                     <hr>
-                    <a href="index.html#read_docs" onclick="javascript:loadPage('read_docs'); redirectUrl();">Reading this Documentation</a>
+                    <a href="index.html#read_docs" onclick="javascript:loadPage('read_docs');">Reading this Documentation</a>
                     <br><br>
                     Player's Guide
                     <ul>
-                        <li><a href="index.html#launch" onclick="javascript:loadPage('launch'); redirectUrl();">First-time User Guide</a></li>
-                        <li><a href="index.html#troubleshooting" onclick="javascript:loadPage('troubleshooting'); redirectUrl();">Troubleshooting</a></li>
-                        <li><a href="index.html#controls" onclick="javascript:loadPage('controls'); redirectUrl();">Game Controls</a></li>
+                        <li><a href="index.html#launch" onclick="javascript:loadPage('launch');">First-time User Guide</a></li>
+                        <li><a href="index.html#troubleshooting" onclick="javascript:loadPage('troubleshooting');">Troubleshooting</a></li>
+                        <li><a href="index.html#controls" onclick="javascript:loadPage('controls');">Game Controls</a></li>
                     </ul>
                     <br>
                     Mod-making Guidelines
                     <ul>
-                        <li><a href="index.html#make_mod" onclick="javascript:loadPage('make_mod'); redirectUrl();">How to Make a Mod</a></li>
-                        <li><a href="index.html#learn_lua" onclick="javascript:loadPage('learn_lua'); redirectUrl();">Learning Lua</a></li>
-                        <li><a href="index.html#error_screens" onclick="javascript:loadPage('error_screens'); redirectUrl();">Error Screens</a></li>
+                        <li><a href="index.html#make_mod" onclick="javascript:loadPage('make_mod');">How to Make a Mod</a></li>
+                        <li><a href="index.html#learn_lua" onclick="javascript:loadPage('learn_lua');">Learning Lua</a></li>
+                        <li><a href="index.html#error_screens" onclick="javascript:loadPage('error_screens');">Error Screens</a></li>
                     </ul>
                     <br>
                     Engine Documentation
                     <ul>
-                        <li><a href="index.html#basic_setup" onclick="javascript:loadPage('basic_setup'); redirectUrl();">Basic Setup</a></li><br>
+                        <li><a href="index.html#basic_setup" onclick="javascript:loadPage('basic_setup');">Basic Setup</a></li><br>
                         <li>
                             Script References
                             <ul>
-                                <li><a href="index.html#outline_encounter" onclick="javascript:loadPage('outline_encounter'); redirectUrl();">The Encounter Script</a></li>
-                                <li><a href="index.html#outline_monster" onclick="javascript:loadPage('outline_monster'); redirectUrl();">The Monster Script</a></li>
-                                <li><a href="index.html#outline_wave" onclick="javascript:loadPage('outline_wave'); redirectUrl();">The Wave Script</a></li>
+                                <li><a href="index.html#outline_encounter" onclick="javascript:loadPage('outline_encounter');">The Encounter Script</a></li>
+                                <li><a href="index.html#outline_monster" onclick="javascript:loadPage('outline_monster');">The Monster Script</a></li>
+                                <li>The Wave Script</li> <!-- <li><a href="index.html#outline_wave" onclick="javascript:loadPage('outline_wave');">The Wave Script</a></li> -->
                             </ul>
                         </li><br>
-                        <li><a href="index.html#game_states" onclick="javascript:loadPage('game_states'); redirectUrl();">Game States</a></li>
-                        <li><a href="index.html#game_events" onclick="javascript:loadPage('game_events'); redirectUrl();">Game Events</a></li>
-                        <li><a href="index.html#special_functions" onclick="javascript:loadPage('special_functions'); redirectUrl();">Special Functions</a></li>
-                        <li><a href="index.html#special_variables" onclick="javascript:loadPage('special_variables'); redirectUrl();">Special Variables</a></li>
-                        <li><a href="index.html#text_commands" onclick="javascript:loadPage('text_commands'); redirectUrl();">Text Commands</a></li><br>
+                        <li><a href="index.html#game_states" onclick="javascript:loadPage('game_states');">Game States</a></li>
+                        <li><a href="index.html#game_events" onclick="javascript:loadPage('game_events');">Game Events</a></li>
+                        <li><a href="index.html#special_functions" onclick="javascript:loadPage('special_functions');">Special Functions</a></li>
+                        <li><a href="index.html#special_variables" onclick="javascript:loadPage('special_variables');">Special Variables</a></li>
+                        <li><a href="index.html#text_commands" onclick="javascript:loadPage('text_commands');">Text Commands</a></li><br>
                         <li>
                             Objects
                             <ul>
@@ -242,8 +242,8 @@
                 <b class="tooltip" title="Tooltip test.">Tooltip test.</b>
                 
                 <p>
-                    And this <code class="inline">is some inline code</code> followed by some text.<br>
-                    <code>This is some regular code.</code> it belongs on its own line.<br>
+                    And this <code class="inline">is some inline code, actually some very long inline code</code> followed by some text.<br>
+                    <code>This is some regular code. Some really long regular code.</code> it belongs on its own line.<br>
                 </p>
                 
                 <p>
@@ -2598,6 +2598,7 @@ enemypositions = {
                         <li>This script is the only truly <b>required</b> script when making a mod.</li>
                         <li>Use this script to control what happens when the player <b>quits</b>, <b>exits</b>, <b>dies</b> or <b>flees</b>.</li>
                         <li>This script controls which <b>waves</b>/<b>attacks</b> will play.</li>
+                        <li>This script is the best place to set up a <b>turn counter</b>.</li>
                         <li>Can set the initial <b>music</b> and <b>battle text</b>/<b>encounter text</b>.</li>
                         <li>Can change the layer of the <b>UI</b>, <b>buttons</b> and <b>player stats</b>.</li>
                         <li>Use to control <b>game states</b> and determine what happens when <b>entering</b> and <b>exiting</b> them.</li>
@@ -5828,7 +5829,7 @@ Encounter.Call("PlayerHurt", 4) -- call an Encounter script function</code></pre
                             <td><code class="inline">none</code></td>
                             <td><i>N/A</i></td>
                             <td>Letters will stay completely still.</td>
-                            <td>Not really used</td>
+                            <td>More serious fights,<br>such as ASGORE</td>
                         </tr>
                         <tr>
                             <td><code class="inline">rotate</code></td>
@@ -6429,10 +6430,10 @@ second line: "[instant]RUN. INTO. THE.\nfriendliness\npellets"</code></pre>
         </div>
         
         <div id="buttonContainer">
-            <img src="img/btn/fightbt_0.png" onmouseover="switchbtn(this, true);" onmouseleave="switchbtn(this, false);">
-            <img src="img/btn/actbt_0.png"   onmouseover="switchbtn(this, true);" onmouseleave="switchbtn(this, false);">
-            <img src="img/btn/itembt_0.png"  onmouseover="switchbtn(this, true);" onmouseleave="switchbtn(this, false);">
-            <img src="img/btn/mercybt_0.png" onmouseover="switchbtn(this, true);" onmouseleave="switchbtn(this, false);" onclick="mercybtn(this);" style="cursor: pointer;">
+            <div id="fightbt"></div>
+            <div id="actbt"></div>
+            <div id="itembt"></div>
+            <div id="mercybt" onclick="mercybtn(this);" style="cursor: pointer;"></div>
         </div>
 	</body>
 </html>

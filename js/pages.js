@@ -1,5 +1,6 @@
 pages = getPages();
 
+// goes to a random page (not including the currently active one)
 function random_page() {
     var new_page = pages[0];
     do
@@ -9,14 +10,13 @@ function random_page() {
 	// document.location.href = pages[new_page];
 };
 
-// on page load: link pressing "enter" in the search box to clicking "go"
+// link pressing "enter" in the search box to clicking "go"
 document.getElementById("search-box").addEventListener("keyup", function(event) {if (event.key === "Enter"/* && document.getElementById("search-box").value.length > 0*/) {document.getElementById("search-button").click(); document.getElementById("search-button").focus();}});
 
 // store the page's scroll position on refresh
 window.addEventListener("beforeunload", function() {
     document.cookie = "scroll=" + window.scrollY.toString();
 });
-
 
 // seeks out an anchor on the currently-loaded page by name, and then scrolls to it
 function seekAnchorOnPage(id) {
@@ -64,6 +64,121 @@ function seekAnchorOnPage(id) {
     };
 };
 
+// add "click for types" to all functions
+function setClickForTypes() {
+    var funcs = document.getElementsByClassName("function");
+
+    for (var i = 0; i < funcs.length; i++) {
+        // functions with the class "exclude" will not be counted
+        if (funcs[i].className.indexOf("exclude") > -1)
+            continue;
+        
+        var thing = funcs[i];
+        
+        var old = thing.innerHTML;
+        var str = "";
+        for (var j = 0; j < thing.innerHTML.length; j++) {
+            // add text for variables with types
+            if (thing.innerHTML[j] == "<") {
+                var end = thing.innerHTML.indexOf(">", j) + 1;
+                var substr = thing.innerHTML.substring(j, end);
+                
+                str += substr;
+                if (substr.indexOf("class") > -1) {
+                    str += "<i>";
+                    // check if we should also add "optional"
+                    /*
+                    if (thing.innerHTML.slice(end).indexOf("*") > -1 && thing.innerHTML.slice(end).indexOf("*") <= thing.innerHTML.slice(end).indexOf("class")) {
+                        str += "optional ";
+                    };
+                    */
+                    if (substr.indexOf(" optional\"") > substr.indexOf("class=\"") && substr.indexOf("class=\"") > 0)
+                        str += "optional ";
+                    
+                    // add the name of the variable type to the text
+                    str += substr.split("class=\"")[1].split("\"")[0].split(" ")[0] + "</i> ";
+                };
+                j = end;
+            // add text for script labels
+            } else if (thing.innerHTML[j] == "[") {
+                // store the length of str before starting;
+                var startingLength = str.length;
+                
+                var temp = function(letter) {
+                    if (letter == "E") {
+                        return "Encounter";
+                    } else if (letter == "M") {
+                        return "Monster";
+                    } else if (letter == "W") {
+                        return "Wave";
+                    };
+                    
+                    return "";
+                };
+                
+                str += "(";
+                
+                var currentChar = j;
+                while (thing.innerHTML[currentChar] != "]") {
+                    currentChar += 1;
+                    
+                    str += temp(thing.innerHTML[currentChar]);
+                    
+                    if (thing.innerHTML[currentChar] == "/") {
+                        var nextSlash = thing.innerHTML.slice(currentChar + 1).indexOf("/");
+                        
+                        // if there is another slash after this one (there can only be 2 max)
+                        if (nextSlash > -1) {
+                            str += ", ";
+                        // otherwise
+                        } else {
+                            // check if there was a slash before this one
+                            var prevSlash = str.slice(startingLength).indexOf("/");
+                            
+                            // there was a previous slash
+                            if (prevSlash > -1) {
+                                str += ", and ";
+                            // there was no previous slash (there is only one slash total)
+                            } else {
+                                str += " and ";
+                            };
+                        };
+                    };
+                };
+                
+                str += " scripts)";
+                
+                j = thing.innerHTML.length - 1;
+            };
+            if (thing.innerHTML[j] != undefined) {
+                str += thing.innerHTML[j];
+            };
+        };
+        
+        thing.setAttribute("test1", str);
+        thing.setAttribute("test2", old);
+        
+        var toggle = false;
+        thing.onclick = function(thing) {
+            toggle = !toggle;
+            if (toggle) {
+                this.innerHTML = this.getAttribute("test1");
+            } else {
+                this.innerHTML = this.getAttribute("test2");
+            };
+        };
+        
+        var textParent = document.createElement("i");
+        textParent.className = "clickLabel";
+        var text = document.createTextNode("click below for types, or hover over each variable for its type");
+        textParent.appendChild(text);
+        // textParent.style = "color: rgba(1, 1, 1, 0.75)";
+        funcs[i].parentNode.insertBefore(textParent, funcs[i]);
+        funcs[i].parentNode.insertBefore(document.createElement("br"), textParent.nextSibling);
+    };
+};
+
+// code to execute when the page is finished loading
 window.onload = function() {
     // make every anchor unique by adding the name of the page it's in as a prefix
     var pages = document.getElementsByClassName("page");
@@ -96,6 +211,7 @@ window.onload = function() {
     };
 
     // replace all anchor references with javascript links
+    /*
     window.scrollTo(0, 0);
     var alreadyActive = null;
 
@@ -103,7 +219,7 @@ window.onload = function() {
         if (pages[i].className.indexOf("active") > -1)
             alreadyActive = pages[i];
         else
-            pages[i].className == "page active";
+            pages[i].className = "page active";
         
         var a = pages[i].getElementsByTagName("a");
         
@@ -131,24 +247,6 @@ window.onload = function() {
                     str += "loadPage('" + targetPageName + "');";
                     
                     str += "seekAnchorOnPage('" + targetAnchorName + "');";
-                    /*
-                    // unload all pages
-                    for (k = 0; k < i; k++)
-                        pages[k].className = "page";
-                    
-                    // make the target page active
-                    targetPage.className = "page active";
-                    
-                    // grab the position of the anchor
-                    str += "window.scrollTo(0, (" + targetAnchor.getBoundingClientRect().top.toString() + ") - 30 + window.scrollY);";
-                    
-                    // de-activate the target page
-                    targetPage.className = "page";
-                    
-                    //re-activate the active page if applicable
-                    if (alreadyActive != null)
-                        alreadyActive.className = "page active";
-                    */
                 } else
                     str += "seekAnchorOnPage('" + targetAnchorName + "');";
                     // str += "window.scrollTo(0, (" + targetAnchor.getBoundingClientRect().top.toString() + ") - 30);";
@@ -156,19 +254,32 @@ window.onload = function() {
                 
                 a[j].setAttribute("href", str);
             };
-        };
         
         pages[i].className = "page";
     };
 
     if (alreadyActive != null)
         alreadyActive.className = "page active";
+    */
+    
+    // implement the "click to show types" stuff for every function
+    // must be done here instead of on page load to also account for the link substitution done just above
+    setClickForTypes();
     
     // scroll to the location where you left off
     if (document.cookie.indexOf("scroll=") > -1) {
         var scrollString = document.cookie.split("scroll=")[1].split(" ")[0].split(";")[0];
         window.scrollTo(0, Number(scrollString));
     };
+};
+
+// when going back or forwards, load the appropriate page (and possibly anchor on the page)
+window.onhashchange = function() {
+    if (window.location.toString().split("/index.html")[1] != "") {
+        loadPage(window.location.toString().split("/index.html")[1].split("#")[1]);
+        // redirectUrl();
+    } else
+        loadPage("index");
 };
 
 // recursive scan to extract all raw text from nodes
@@ -231,6 +342,7 @@ function recursiveScan(node) {
     return rawTextTable;
 };
 
+// takes the text from the search box and searches all pages using the above function
 function search() {
 	var input = document.getElementById("search-box");
 	var search_text = input.value;
@@ -628,6 +740,8 @@ function search() {
     };
 };
 
+// unloads other active pages if necessary, and then loads a page based on the given name
+// the name can also include a sub anchor (see below)
 function loadPage(newPage) {
     var allPages = document.getElementsByClassName("page");
     
@@ -644,14 +758,23 @@ function loadPage(newPage) {
         };
         
         // scroll to the top
-        window.scrollTo(0, 0);
+        // window.scrollTo(0, 0);
     };
+    
+    // if url has a page anchor followed by a sub anchor (like #special_functions:SetGlobal), separate the two
+    var anchor = "";
+    if (newPage.indexOf(":") > -1) {
+        anchor = newPage.split(":")[1];
+        newPage = newPage.split(":")[0];
+    }
     
     // then, activate the new page
     for (var i = 0; i < allPages.length; i++) {
         if (allPages[i].id == newPage) {
             allPages[i].className += " active";
             document.title = allPages[i].getAttribute("name") + " | Unofficial Unitale/CYF Documentation";
+            if (anchor != "")
+                seekAnchorOnPage(anchor);
             break;
         } else if (i == allPages.length - 1)
             alert("Page \"" + newPage.toString() + "\" was not found.\nThis is a bug in the Documentation. Please send a screenshot to the developers.");
@@ -661,21 +784,12 @@ function loadPage(newPage) {
     document.cookie = "page=" + newPage;
 };
 
-// initial page opening
-if (document.cookie.indexOf("page") < 0 || document.cookie.split("page=")[1].split(" ")[0].split(";")[0] == "search")
-    loadPage("index");
-else {
-    var pageString = document.cookie.split("page=")[1].split(" ")[0].split(";")[0];
-    loadPage(pageString);
-};
-
 /* ==================== */
 /* SUBSTITUTION SECTION */
 /* ==================== */
 
 // external link icon
 var links = document.getElementsByTagName("a");
-
 for (var i = 0; i < links.length; i++) {
     if (links[i].getAttribute("href") != null && links[i].getAttribute("href").indexOf("http") == 0) {
         links[i].className = "external";
@@ -717,126 +831,12 @@ setClassTitle("CYFText", "CYF: Text Object");
 
 // keyboard key indicators
 var kbd = document.getElementsByTagName("kbd");
-
 for (var i = 0; i < kbd.length; i++) {
     kbd[i].setAttribute("title", "Keyboard Key: " + kbd[i].innerHTML);
 };
 
-// add "click for types" to all functions
-var funcs = document.getElementsByClassName("function");
-
-for (var i = 0; i < funcs.length; i++) {
-    // functions with the class "exclude" will not be counted
-    if (funcs[i].className.indexOf("exclude") > -1)
-        continue;
-    
-    var thing = funcs[i];
-    
-    var old = thing.innerHTML;
-    var str = "";
-    for (var j = 0; j < thing.innerHTML.length; j++) {
-        // add text for variables with types
-        if (thing.innerHTML[j] == "<") {
-            var end = thing.innerHTML.indexOf(">", j) + 1;
-            var substr = thing.innerHTML.substring(j, end);
-            
-            str += substr;
-            if (substr.indexOf("class") > -1) {
-                str += "<i>";
-                // check if we should also add "optional"
-                /*
-                if (thing.innerHTML.slice(end).indexOf("*") > -1 && thing.innerHTML.slice(end).indexOf("*") <= thing.innerHTML.slice(end).indexOf("class")) {
-                    str += "optional ";
-                };
-                */
-                if (substr.indexOf(" optional\"") > substr.indexOf("class=\"") && substr.indexOf("class=\"") > 0)
-                    str += "optional ";
-                
-                // add the name of the variable type to the text
-                str += substr.split("class=\"")[1].split("\"")[0].split(" ")[0] + "</i> ";
-            };
-            j = end;
-        // add text for script labels
-        } else if (thing.innerHTML[j] == "[") {
-            // store the length of str before starting;
-            var startingLength = str.length;
-            
-            var temp = function(letter) {
-                if (letter == "E") {
-                    return "Encounter";
-                } else if (letter == "M") {
-                    return "Monster";
-                } else if (letter == "W") {
-                    return "Wave";
-                };
-                
-                return "";
-            };
-            
-            str += "(";
-            
-            var currentChar = j;
-            while (thing.innerHTML[currentChar] != "]") {
-                currentChar += 1;
-                
-                str += temp(thing.innerHTML[currentChar]);
-                
-                if (thing.innerHTML[currentChar] == "/") {
-                    var nextSlash = thing.innerHTML.slice(currentChar + 1).indexOf("/");
-                    
-                    // if there is another slash after this one (there can only be 2 max)
-                    if (nextSlash > -1) {
-                        str += ", ";
-                    // otherwise
-                    } else {
-                        // check if there was a slash before this one
-                        var prevSlash = str.slice(startingLength).indexOf("/");
-                        
-                        // there was a previous slash
-                        if (prevSlash > -1) {
-                            str += ", and ";
-                        // there was no previous slash (there is only one slash total)
-                        } else {
-                            str += " and ";
-                        };
-                    };
-                };
-            };
-            
-            str += " scripts)";
-            
-            j = thing.innerHTML.length - 1;
-        };
-        if (thing.innerHTML[j] != undefined) {
-            str += thing.innerHTML[j];
-        };
-    };
-    
-    thing.setAttribute("test1", str);
-    thing.setAttribute("test2", old);
-    
-    var toggle = false;
-    thing.onclick = function(thing) {
-        toggle = !toggle;
-        if (toggle) {
-            this.innerHTML = this.getAttribute("test1");
-        } else {
-            this.innerHTML = this.getAttribute("test2");
-        };
-    };
-    
-    var textParent = document.createElement("i");
-    textParent.className = "clickLabel";
-    var text = document.createTextNode("click below for types, or hover over each variable for its type");
-    textParent.appendChild(text);
-    // textParent.style = "color: rgba(1, 1, 1, 0.75)";
-    funcs[i].parentNode.insertBefore(textParent, funcs[i]);
-    funcs[i].parentNode.insertBefore(document.createElement("br"), textParent.nextSibling);
-};
-
 // add "show/hide comments" buttons to all <pre> elements
 var pre = document.getElementsByTagName("pre");
-
 for (var i = 0; i < pre.length; i++) {
     var textParent = document.createElement("div");
     textParent.className = "ShowHideText";
@@ -866,8 +866,7 @@ for (var i = 0; i < pre.length; i++) {
     // credits
     var credits = document.createElement("font");
     credits.appendChild(document.createTextNode("?"));
-    credits.className = "tooltip";
-    credits.style = "float: right; position: relative; bottom: 32px; font-size: 24px;";
+    credits.className = "tooltip rainbowtooltip";
     credits.setAttribute("title", "Code Highlighting - Rainbow by Craig Campbell (http://rainbowco.de/)\n(See Main page for link)");
     // click support because why not
     credits.onclick = "alert(\"" + credits.getAttribute("title").replace("\n", "\\n") + "\");";
@@ -902,11 +901,17 @@ function showComments(node, show) {
 /////////////////////////////////////////
 document.getElementById("jserror").parentNode.removeChild(document.getElementById("jserror"));
 
-// redirects from pages like "index.html#learn_lua" to "index.html"
-function redirectUrl() {window.location = window.location.toString().split("/index.html")[0] + "/index.html";};
+// initial page opening
+// if (document.cookie.indexOf("page") < 0 || document.cookie.split("page=")[1].split(" ")[0].split(";")[0] == "search")
+    // loadPage("index");
+// else {
+    // var pageString = document.cookie.split("page=")[1].split(" ")[0].split(";")[0];
+    // loadPage(pageString);
+// };
 
 // if the document name has an anchor, pass it to loadPage
-if (window.location.toString().split("/index.html")[1] != "") {
-    loadPage(window.location.toString().split("/index.html")[1].split("#")[1]);
-    redirectUrl();
-};
+// if (window.location.toString().split("/index.html")[1] != "") {
+    // loadPage(window.location.toString().split("/index.html")[1].split("#")[1]);
+    // redirectUrl();
+// } else;
+window.onhashchange();

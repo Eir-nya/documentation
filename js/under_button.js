@@ -1,5 +1,3 @@
-function switchbtn(btn, toggle) { btn.setAttribute("src", btn.getAttribute("src").replace(/_\d/, (toggle ? "_1" : "_0"))); };
-
 function mercybtn(btn) {
     var sound = new Audio("img/secwet/enemydust.wav");
     var play = function() { sound.play(); };
@@ -22,10 +20,11 @@ function mercybtn(btn) {
     }
     
     document.querySelector(".page[id='mercy']").className += " active";
+    document.querySelector(".page[id='mercy']").style = "width: 100%; left: 0px;";
     
     window.onscroll = null;
     document.getElementById("main").removeChild(document.getElementById("sidebar"));
-    document.getElementById("main").style = "margin-top: 30%; width: auto; max-width: 1500px;";
+    document.getElementById("main").style = "margin-top: 30%; width: auto; max-width: 1500px; min-height: 0px;";
     document.getElementById("buttonContainer").style = "width: auto; max-width: 1500px;";
     document.body.style = "background-color: black;";
     
